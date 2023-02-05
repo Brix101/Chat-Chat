@@ -1,4 +1,4 @@
-import { DocumentDefinition } from "mongoose";
+import { DocumentDefinition, FilterQuery } from "mongoose";
 import UserModel, { User } from "./user.model";
 
 export async function createUser(
@@ -9,4 +9,8 @@ export async function createUser(
 
 export async function findUserByEmail(email: User["email"]) {
   return UserModel.findOne({ email });
+}
+
+export async function findUserById(query: FilterQuery<User>) {
+  return UserModel.findOne(query).lean();
 }

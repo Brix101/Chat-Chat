@@ -6,6 +6,7 @@ import express from "express";
 import helmet from "helmet";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import deserializeUser from "./middleware/deserializeUser";
 import modules from "./modules";
 import { connectToDatabase } from "./utils/connect";
 
@@ -22,6 +23,7 @@ app.use(
   })
 );
 app.use(helmet());
+app.use(deserializeUser);
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
