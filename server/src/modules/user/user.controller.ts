@@ -8,19 +8,23 @@ export async function registerUserHandler(
   req: Request<{}, {}, RegisterUserBody>,
   res: Response
 ) {
-  const { username, email, password } = req.body;
+  const { name, email, password } = req.body;
   const socket = req.app.get("socket");
   try {
-    await createUser({ username, email, password });
+    await createUser({ name, email, password });
 
-    return res.status(StatusCodes.CREATED).send("user created successfully");
+    return res
+      .status(StatusCodes.CREATED)
+      .send({ message: "User created successfully" });
   } catch (error) {
     if (error instanceof MongoError) {
       if (error.code === 11000) {
-        return res.status(StatusCodes.CONFLICT).send("User already exists");
+        return res
+          .status(StatusCodes.CONFLICT)
+          .send({ message: "User already exists" });
       }
     }
 
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ e: error });
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error });
   }
 }

@@ -1,32 +1,47 @@
-import { getModelForClass, pre, prop } from "@typegoose/typegoose";
 import argon2 from "argon2";
+import config from "config";
+import mongoose from "mongoose";
 
-@pre<User>("save", async function (next) {
-  if (this.isModified("password") || this.isNew) {
-    const hash = await argon2.hash(this.password);
-
-    this.password = hash;
-
-    return next();
-  }
-})
-export class User {
-  @prop({ required: true, unique: true })
-  public username: string;
-
-  @prop({ required: true, unique: true })
-  public email: string;
-
-  @prop({ required: true })
-  public password: string;
-
-  public async comparePassword(password: string): Promise<boolean> {
-    return argon2.verify(this.password, password);
-  }
+export interface User extends mongoose.Document {
+  email: string;
+  name: string;
+  password: string;
+  comparePassword(candidatePassword: string): Promise<Boolean>;
 }
 
-export const UserModel = getModelForClass(User, {
-  schemaOptions: {
-    timestamps: true,
+const userSchema = new mongoose.Schema(
+  {
+    email: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
+    password: { type: String, required: true },
   },
+  {
+    timestamps: true,
+  }
+);
+
+userSchema.pre("save", async function (next) {
+  let user = this as unknown as User;
+
+  if (!user.isModified("password")) {
+    return next();
+  }
+
+  const hash = await argon2.hash(user.password);
+
+  user.password = hash;
+
+  return next();
 });
+
+userSchema.methods.comparePassword = async function (
+  candidatePassword: string
+): Promise<boolean> {
+  const user = this as User;
+  //return false if password not correct
+  return argon2.verify(candidatePassword, user.password).catch(() => false);
+};
+
+const UserModel = mongoose.model<User>("User", userSchema);
+
+export default UserModel;

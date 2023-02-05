@@ -1,6 +1,9 @@
-import { User, UserModel } from "./user.model";
+import { DocumentDefinition } from "mongoose";
+import UserModel, { User } from "./user.model";
 
-export async function createUser(user: Omit<User, "comparePassword">) {
+export async function createUser(
+  user: DocumentDefinition<Omit<User, "comparePassword">>
+) {
   return UserModel.create(user);
 }
 

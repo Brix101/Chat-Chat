@@ -2,8 +2,8 @@ import { object, string, TypeOf } from "zod";
 
 export const registerUserSchema = {
   body: object({
-    username: string({
-      required_error: "username is required",
+    name: string({
+      required_error: "name is required",
     }),
     email: string({
       required_error: "email is required",
@@ -14,7 +14,7 @@ export const registerUserSchema = {
       .min(6, "Password must be at least 6 characters long")
       .max(64, "Password should not be longer than 64 characters"),
     confirmPassword: string({
-      required_error: "username is required",
+      required_error: "confirmPassword is required",
     }),
   }).refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
