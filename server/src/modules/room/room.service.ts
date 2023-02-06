@@ -25,7 +25,7 @@ export async function createRoom(
 
 export async function updateRoom(
   query: FilterQuery<Room>,
-  update: UpdateQuery<Room>,
+  update: UpdateQuery<Omit<Room, "createdAt" | "updatedAt" | "createdBy">>,
   options: QueryOptions
 ) {
   return await RoomModel.findOne(query, update, options);

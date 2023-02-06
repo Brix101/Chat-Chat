@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { CreateRoomBody, GetRoomBody } from "./room.schema";
+import { CreateRoomBody, GetRoomBody, UpdateRoomBody } from "./room.schema";
 import {
   createRoom,
   deleteRoom,
@@ -50,12 +50,11 @@ const getRoomHandler = async (req: Request<GetRoomBody>, res: Response) => {
 };
 
 const updateRoomHandler = async (
-  req: Request<GetRoomBody, {}, CreateRoomBody>,
+  req: Request<{}, {}, UpdateRoomBody>,
   res: Response
 ) => {
   const userId = res.locals.user._id;
-  const roomId = req.params.roomId;
-  const { name } = req.body;
+  const { name, roomId } = req.body;
 
   const room = await findRoom({ id: roomId });
 
