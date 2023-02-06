@@ -4,12 +4,15 @@ import type {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { io } from "socket.io-client";
 import { resetAuthState, tokenReceived } from "../../features/auth/authSlice";
 import { RootState } from "../store";
 
 const hostname = window.location.hostname;
 
-export const baseUrl = `http://${hostname}:5000/api`;
+export const server = `http://${hostname}:5000`;
+export const baseUrl = `${server}/api`;
+export const socket = io(server);
 
 const baseQuery = fetchBaseQuery({
   baseUrl,

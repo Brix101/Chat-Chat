@@ -47,6 +47,14 @@ modules(app);
 io.on("connection", async (socket) => {
   connections.add(socket);
   console.log("connected", socket.id);
+  setInterval(async () => {
+    socket.emit("ping", "pong");
+  }, 5000);
+
+  socket.on("pong", (data) => {
+    console.log({ data });
+    socket.emit(data, "ping");
+  });
 
   socket.on("disconnect", () => {
     connections.delete(socket);

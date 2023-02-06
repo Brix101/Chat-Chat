@@ -15,6 +15,7 @@ import Link from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import { socket } from "../app/services/api";
 import { useLogoutMutation } from "../app/services/authServices";
 import { useGetUserQuery } from "../app/services/userServices";
 
@@ -108,6 +109,13 @@ const footers = [
 export default function Dashboard() {
   const [logoutMutation, { isLoading }] = useLogoutMutation();
   const { data } = useGetUserQuery("");
+
+  // receive a message from the server
+  socket.on("ping", (data) => {
+    console.log({data})
+    socket.emit(data, "ping");
+  });
+  
   return (
     <React.Fragment>
       <GlobalStyles
