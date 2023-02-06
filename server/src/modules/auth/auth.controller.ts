@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import omit from "../../helpers/omit";
 import { createSession, inValidateSession } from "../session/session.service";
 import { findUserByEmail } from "../user/user.service";
 import { LoginBody } from "./auth.schema";
