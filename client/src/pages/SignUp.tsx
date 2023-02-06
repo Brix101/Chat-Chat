@@ -10,15 +10,21 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
+import LoadingButton from "@mui/lab/LoadingButton"
+import { useRegisterUserMutation } from "../app/services/userServices";
 
 export default function SignUp() {
+    const [registerMutation,{isLoading}] = useRegisterUserMutation()
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    registerMutation({
+      name: data.get("name") as string,
+      email: data.get("email") as string,
+      password: data.get("password") as string,
+      confirmPassword: data.get("confirmPassword") as string,
+    }).then((res)=>console.log(res));
   };
 
   return (
@@ -40,23 +46,13 @@ export default function SignUp() {
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                name="firstName"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
+                id="name"
+                label="Name"
+                name="name"
               />
             </Grid>
             <Grid item xs={12}>
@@ -89,14 +85,15 @@ export default function SignUp() {
               />
             </Grid>
           </Grid>
-          <Button
+          <LoadingButton
+            loading={isLoading}
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
             Sign Up
-          </Button>
+          </LoadingButton>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link component={RouterLink} to="/sign-in" variant="body2">

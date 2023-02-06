@@ -108,7 +108,6 @@ const footers = [
 export default function Dashboard() {
   const [logoutMutation, { isLoading }] = useLogoutMutation();
   const { data } = useGetUserQuery("");
-  console.log(data);
   return (
     <React.Fragment>
       <GlobalStyles
@@ -127,12 +126,12 @@ export default function Dashboard() {
           </Typography>
           <nav>
             <Link
+              component={"button"}
               variant="button"
               color="text.primary"
-              href="#"
               sx={{ my: 1, mx: 1.5 }}
             >
-              Support
+              {data?.email}
             </Link>
           </nav>
           <LoadingButton

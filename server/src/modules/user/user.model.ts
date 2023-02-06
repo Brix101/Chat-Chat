@@ -1,5 +1,4 @@
 import argon2 from "argon2";
-import config from "config";
 import mongoose from "mongoose";
 
 export interface User extends mongoose.Document {
@@ -11,6 +10,7 @@ export interface User extends mongoose.Document {
 
 const userSchema = new mongoose.Schema(
   {
+
     email: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     password: { type: String, required: true },

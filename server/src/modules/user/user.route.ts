@@ -11,7 +11,7 @@ const router = express.Router();
 router.get("/me", requireUser, (req, res) => {
   const session = res.locals.user;
   const user = omit(session, ["createdAt", "updatedAt", "session"]);
-  return res.send({ user });
+  return res.send(user);
 });
 
 router.post(

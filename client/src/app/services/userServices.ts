@@ -6,15 +6,30 @@ export interface User {
   _id: string;
 }
 
+export interface SignInUser{
+   name: string;
+   email: string;
+   password:string;
+   confirmPassword:string ;
+}
+
+
 export const userApi = api.injectEndpoints({
   endpoints: (build) => ({
     getUser: build.query<User, string>({
       query: () => "/users/me",
     }),
+    registerUser: build.mutation<any,SignInUser>({
+        query:(body:SignInUser)=>({
+            url:"/users/register",
+            method:"POST",
+            body
+        })
+    })
   }),
 });
 
-export const { useGetUserQuery } = userApi;
+export const { useGetUserQuery,useRegisterUserMutation } = userApi;
 
 export const {
   endpoints: { getUser },
