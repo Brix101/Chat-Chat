@@ -2,7 +2,7 @@ export default {
   port: 5000,
   dbUri: "mongodb://root:root@localhost:27017",
   dbName: "chat-chat",
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:3000", "http://localhost:5173"],
   saltWorkFactor: 10,
   accessTokenTtl: "5m",
   refreshTokenTtl: "1y",

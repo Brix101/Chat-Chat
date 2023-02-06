@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import express from "express";
 import helmet from "helmet";
 import { createServer } from "http";
+import morgan from "morgan";
 import { Server } from "socket.io";
 import deserializeUser from "./middleware/deserializeUser";
 import modules from "./modules";
@@ -24,6 +25,7 @@ app.use(
 );
 app.use(helmet());
 app.use(deserializeUser);
+app.use(morgan("dev"));
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {

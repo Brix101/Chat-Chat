@@ -10,7 +10,8 @@ const store = configureStore({
     auth,
   },
 
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(logger).concat(api.middleware),
 });
 export type RootState = ReturnType<typeof store.getState>;
 

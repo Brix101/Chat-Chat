@@ -19,17 +19,9 @@ const slice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addMatcher(login.matchPending, (state, action) => {
-        console.log("pending", action);
-      })
-      .addMatcher(login.matchFulfilled, (state, action) => {
-        console.log("fulfilled", action);
-        state.token = action.payload.token;
-      })
-      .addMatcher(login.matchRejected, (state, action) => {
-        console.log("rejected", action);
-      });
+    builder.addMatcher(login.matchFulfilled, (state, action) => {
+      state.token = action.payload.accessToken;
+    });
   },
 });
 
