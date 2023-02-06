@@ -14,27 +14,14 @@ async function deserializeUser(
     ""
   ).replace(/^Bearer\s/, "");
 
-  const sessionId = get(req, "cookies.sessionId");
-
   if (!accessToken) {
     return next();
   }
 
-  const { decoded, expired } = verifyJwt(accessToken);
+  const { decoded } = verifyJwt(accessToken);
 
   if (decoded) {
     res.locals.user = decoded;
-  }
-
-  if (expired && sessionId) {
-    const newAccessToken = await reIssueAccessToken({ sessionId });
-
-    if (newAccessToken) {
-      const result = verifyJwt(newAccessToken);
-
-      res.locals.user = result.decoded;
-    }
-    return next();
   }
 
   return next();

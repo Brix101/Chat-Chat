@@ -59,7 +59,7 @@ export async function newTokenHandler(
   req: Request<{}, {}, LoginBody>,
   res: Response
 ) {
-  const sessionId = res.locals.user.decoded.session;
+  const sessionId = res.locals.sessionId;
 
   const accessToken = await reIssueAccessToken({ sessionId });
 

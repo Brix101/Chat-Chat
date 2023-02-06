@@ -30,7 +30,7 @@ const baseQueryWithReauth: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  console.log({ result });
+
   if (result.error && result.error.data === "Unauthorized") {
     // try to get a new token
     const refreshResult = await baseQuery(
@@ -40,8 +40,11 @@ const baseQueryWithReauth: BaseQueryFn<
     );
 
     if (refreshResult.data) {
+      const { accessToken } = refreshResult.data as unknown as {
+        accessToken: string;
+      };
       // store the new token
-      api.dispatch(tokenReceived(refreshResult.data as string));
+      api.dispatch(tokenReceived(accessToken));
       // retry the initial query
       result = await baseQuery(args, api, extraOptions);
     } else {
