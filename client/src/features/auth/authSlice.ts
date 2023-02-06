@@ -1,19 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { login } from "../../app/services/authServices";
+import { login, logout } from "../../app/services/authServices";
 import type { RootState } from "../../app/store";
 
 const initialState = {
   token: null,
-  isAuthenticated: false,
-} as { token: string | null; isAuthenticated: boolean };
+} as { token: string | null };
 
 const slice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout: () => initialState,
+    resetAuthState: () => initialState,
     tokenReceived: (state, { payload }: PayloadAction<string | null>) => {
       state.token = payload;
     },
@@ -22,10 +21,13 @@ const slice = createSlice({
     builder.addMatcher(login.matchFulfilled, (state, action) => {
       state.token = action.payload.accessToken;
     });
+    builder.addMatcher(logout.matchFulfilled, (state, action) => {
+      state.token = action.payload.accessToken;
+    });
   },
 });
 
-export const { logout, tokenReceived } = slice.actions;
+export const { resetAuthState, tokenReceived } = slice.actions;
 
 export default persistReducer(
   {
@@ -36,4 +38,4 @@ export default persistReducer(
   slice.reducer
 );
 
-export const selectIsAuthenticated = (state: RootState) => state.auth;
+export const authState = (state: RootState) => state.auth;

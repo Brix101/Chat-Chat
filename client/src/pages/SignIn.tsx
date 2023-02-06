@@ -21,7 +21,7 @@ export default function SignIn() {
     loginMutation({
       email: data.get("email") as string,
       password: data.get("password") as string,
-    }).then((res) => console.log(res));
+    });
   };
 
   return (

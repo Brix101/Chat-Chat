@@ -4,7 +4,7 @@ import type {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { logout, tokenReceived } from "../../features/auth/authSlice";
+import { resetAuthState, tokenReceived } from "../../features/auth/authSlice";
 import { RootState } from "../store";
 
 const hostname = window.location.hostname;
@@ -17,21 +17,24 @@ const baseQuery = fetchBaseQuery({
     // By default, if we have a token in the store, let's use that for authenticated requests
     const token = (getState() as RootState).auth.token;
     if (token) {
-      headers.set("authentication", `Bearer ${token}`);
+      headers.set("authorization", `Bearer ${token}`);
     }
     return headers;
   },
+  credentials: "include",
 });
+
 const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  if (result.error && result.error.status === 401) {
+  console.log({ result });
+  if (result.error && result.error.data === "Unauthorized") {
     // try to get a new token
     const refreshResult = await baseQuery(
-      "/api/refreshToken",
+      "/auth/refreshToken",
       api,
       extraOptions
     );
@@ -42,7 +45,7 @@ const baseQueryWithReauth: BaseQueryFn<
       // retry the initial query
       result = await baseQuery(args, api, extraOptions);
     } else {
-      api.dispatch(logout());
+      api.dispatch(resetAuthState());
     }
   }
   return result;
@@ -52,10 +55,4 @@ export const api = createApi({
   reducerPath: "baseAPI",
   baseQuery: baseQueryWithReauth,
   endpoints: () => ({}),
-});
-
-export const enhancedApi = api.enhanceEndpoints({
-  endpoints: () => ({
-    getPost: () => "healthcheck",
-  }),
 });

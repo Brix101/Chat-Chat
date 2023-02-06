@@ -37,6 +37,11 @@ const io = new Server(httpServer, {
 
 const connections = new Set();
 app.set("socket", io);
+
+app.use("/api/health-check", (req, res) => {
+  return res.send({ message: "Server online" });
+});
+
 modules(app);
 
 io.on("connection", async (socket) => {

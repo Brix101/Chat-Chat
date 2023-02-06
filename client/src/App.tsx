@@ -1,28 +1,33 @@
+import { BrowserRouter, Navigate, Outlet, useRoutes } from "react-router-dom";
+import { useTypedSelector } from "./app/store";
+import { authState } from "./features/auth/authSlice";
+import Dashboard from "./pages/Dashboard";
+import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 
-import { BrowserRouter, useRoutes } from "react-router-dom";
-import SignIn from "./pages/SignIn";
-
 function Routes() {
+  const { token } = useTypedSelector(authState);
+  const isAuthenticated = Boolean(token);
   return useRoutes([
-    // {
-    //   // public routes
-    //   path: "/",
-    //   element: <DashboardLayout />,
-    //   children: [
-    //     { path: "/", element: <Dashboard /> },
-    //     { path: "/product-sales", element: <ProductSales /> },
-    //     { path: "/product-sales/:productId", element: <ProductSale /> },
-    //     { path: "/test", element: <TestConnection /> },
-    //   ],
-    // },
     {
-      path: "/sign-in",
-      element: <SignIn />,
+      // public routes
+      path: "/",
+      element: isAuthenticated ? <Outlet /> : <Navigate to={"/sign-in"} />,
+      children: [{ path: "/", element: <Dashboard /> }],
     },
     {
-      path: "/sign-up",
-      element: <SignUp />,
+      path: "/",
+      element: !isAuthenticated ? <Outlet /> : <Navigate to={"/"} />,
+      children: [
+        {
+          path: "/sign-in",
+          element: <SignIn />,
+        },
+        {
+          path: "/sign-up",
+          element: <SignUp />,
+        },
+      ],
     },
     {
       // public routes

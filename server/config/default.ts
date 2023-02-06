@@ -4,7 +4,7 @@ export default {
   dbName: "chat-chat",
   origin: ["http://localhost:3000", "http://localhost:5173"],
   saltWorkFactor: 10,
-  accessTokenTtl: "5m",
+  accessTokenTtl: "30s",
   refreshTokenTtl: "1y",
   publicKey: `-----BEGIN PUBLIC KEY-----
   MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCXzZerpx9qdaelwt1U7NCpWXQK

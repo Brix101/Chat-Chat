@@ -30,7 +30,7 @@ export async function loginHandler(
   );
 
   res.cookie("sessionId", sessionId, {
-    httpOnly: true,
+    httpOnly: false,
     secure: true,
     sameSite: "none",
   });
@@ -47,7 +47,7 @@ export async function logOutHandler(
   await inValidateSession({ sessionId });
 
   res.cookie("sessionId", "", {
-    httpOnly: true,
+    httpOnly: false,
     secure: true,
     sameSite: "none",
   });
