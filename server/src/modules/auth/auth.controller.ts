@@ -42,7 +42,7 @@ export async function logOutHandler(
   req: Request<{}, {}, LoginBody>,
   res: Response
 ) {
-  const sessionId = res.locals.user.decoded.session;
+  const sessionId = res.locals.user.session;
 
   await inValidateSession({ sessionId });
 
@@ -52,7 +52,7 @@ export async function logOutHandler(
     sameSite: "none",
   });
 
-  return res.status(StatusCodes.OK).send({ user: false });
+  return res.status(StatusCodes.OK).send();
 }
 
 export async function newTokenHandler(
