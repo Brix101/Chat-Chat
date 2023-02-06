@@ -2,12 +2,13 @@ import { api } from "./api";
 
 export interface User {
   email: string;
-  password: string;
+  name: string;
+  _id: string;
 }
 
 export const userApi = api.injectEndpoints({
   endpoints: (build) => ({
-    getUser: build.query<any, string>({
+    getUser: build.query<User, string>({
       query: () => "/users/me",
     }),
   }),

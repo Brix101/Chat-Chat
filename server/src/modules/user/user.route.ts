@@ -9,7 +9,7 @@ import { registerUserSchema } from "./user.schema";
 const router = express.Router();
 
 router.get("/me", requireUser, (req, res) => {
-  const session = res.locals.user.decoded;
+  const session = res.locals.user;
   const user = omit(session, ["createdAt", "updatedAt", "session"]);
   return res.send({ user });
 });

@@ -38,10 +38,7 @@ export async function loginHandler(
   return res.status(StatusCodes.OK).send({ accessToken });
 }
 
-export async function logOutHandler(
-  req: Request<{}, {}, LoginBody>,
-  res: Response
-) {
+export async function logOutHandler(req: Request, res: Response) {
   const sessionId = res.locals.user.session;
 
   await inValidateSession({ sessionId });
@@ -55,10 +52,7 @@ export async function logOutHandler(
   return res.status(StatusCodes.OK).send();
 }
 
-export async function newTokenHandler(
-  req: Request<{}, {}, LoginBody>,
-  res: Response
-) {
+export async function newTokenHandler(req: Request, res: Response) {
   const sessionId = res.locals.sessionId;
 
   const accessToken = await reIssueAccessToken({ sessionId });

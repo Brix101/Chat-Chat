@@ -23,7 +23,6 @@ const createSession = async (userId: String, userAgent: String) => {
 };
 
 const inValidateSession = async ({ sessionId }: { sessionId: string }) => {
-  console.log(sessionId);
   return await SessionModel.findByIdAndUpdate(sessionId, {
     $set: { valid: false },
   });

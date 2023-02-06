@@ -1,14 +1,14 @@
 import { api } from "./api";
 
-export interface User {
+export interface LoginInput {
   email: string;
   password: string;
 }
 
 export const authApi = api.injectEndpoints({
   endpoints: (build) => ({
-    login: build.mutation<{ accessToken: string }, User>({
-      query: (credentials: User) => ({
+    login: build.mutation<{ accessToken: string }, LoginInput>({
+      query: (credentials: LoginInput) => ({
         url: "/auth/login",
         method: "POST",
         body: credentials,
