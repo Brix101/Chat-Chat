@@ -1,10 +1,7 @@
 import config from "config";
-import { get } from "lodash";
-import { FilterQuery, UpdateQuery } from "mongoose";
 import omit from "../../helpers/omit";
-import { signJwt, verifyJwt } from "../../utils/jwt.util";
-import { findUserById } from "../user/user.service";
-import SessionModel, { Session } from "./session.model";
+import { signJwt } from "../../utils/jwt.util";
+import SessionModel from "./session.model";
 
 // TODO move and create session on usermodel
 const createSession = async (userId: String, userAgent: String) => {
@@ -19,10 +16,10 @@ const createSession = async (userId: String, userAgent: String) => {
 
   const accessToken = signJwt(
     { ...user, session: newSession._id },
-    { expiresIn: config.get("accessTokenTtl") } // 15 minutes
+    { expiresIn: config.get("accessTokenTtl") } // 5 minutes
   );
 
-  return accessToken;
+  return { sessionId: newSession.id, accessToken };
 };
 
 const inValidateSession = async ({ sessionId }: { sessionId: string }) => {
@@ -43,7 +40,7 @@ const reIssueAccessToken = async ({ sessionId }: { sessionId: string }) => {
 
   const accessToken = signJwt(
     { ...user, session: session._id },
-    { expiresIn: config.get("accessTokenTtl") } // 15 minutes
+    { expiresIn: config.get("accessTokenTtl") } // 5 minutes
   );
 
   return accessToken;
