@@ -20,7 +20,7 @@ function Message({ message, user }: Props) {
         elevation={1}
         sx={{
           p: 2,
-          maxWidth: 1 / 2,
+          maxWidth: 1 / 3,
           width: "auto",
           bgcolor: user ? blue[50] : "",
         }}
