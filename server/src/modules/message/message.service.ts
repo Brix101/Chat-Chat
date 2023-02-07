@@ -24,7 +24,7 @@ export async function updateMessage(
   update: UpdateQuery<Omit<Message, "createdAt" | "updatedAt" | "createdBy">>,
   options: QueryOptions
 ) {
-  return MessageModel.findOne(query, update, options);
+  return MessageModel.findByIdAndUpdate(query, update, options);
 }
 
 export async function deleteMessage(query: FilterQuery<Message>) {

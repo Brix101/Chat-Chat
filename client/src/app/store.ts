@@ -10,12 +10,14 @@ import {
   REHYDRATE,
 } from "redux-persist";
 import auth from "../features/auth/authSlice";
+import user from "../features/user/userSlice";
 import { api } from "./services/api";
 
 const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
     auth,
+    user,
   },
 
   middleware: (getDefaultMiddleware) =>

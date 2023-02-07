@@ -39,7 +39,7 @@ const getAllRoomHandler = async (req: Request, res: Response) => {
 const getRoomHandler = async (req: Request<GetRoomBody>, res: Response) => {
   try {
     const roomId = req.params.roomId;
-    const room = await findRoom({ id: roomId });
+    const room = await findRoom({ _id: roomId });
 
     if (!room) {
       return res.sendStatus(StatusCodes.NOT_FOUND);
@@ -58,7 +58,7 @@ const updateRoomHandler = async (
   const userId = res.locals.user._id;
   const { name, roomId } = req.body;
 
-  const room = await findRoom({ id: roomId });
+  const room = await findRoom({ _id: roomId });
 
   if (!room) {
     return res.sendStatus(StatusCodes.NOT_FOUND);
@@ -70,7 +70,7 @@ const updateRoomHandler = async (
 
   try {
     const updatedRoom = await updateRoom(
-      { id: roomId },
+      { _id: roomId },
       {
         $set: { name },
       },
@@ -89,7 +89,7 @@ const deleteRoomHandler = async (req: Request<GetRoomBody>, res: Response) => {
   try {
     const userId = res.locals.user._id;
     const roomId = req.params.roomId;
-    const room = await findRoom({ id: roomId });
+    const room = await findRoom({ _id: roomId });
 
     if (!room) {
       return res.sendStatus(StatusCodes.NOT_FOUND);

@@ -1,19 +1,24 @@
 import { Box, Paper } from "@mui/material";
 import { blue } from "@mui/material/colors";
+import { useTypedSelector } from "../app/store";
+import { userState } from "../features/user/userSlice";
 
 interface Props {
   message: string;
-  user: boolean;
+  createdBy: string;
 }
 
-function Message({ message, user }: Props) {
+function MessageCard({ message, createdBy }: Props) {
+  const { user } = useTypedSelector(userState);
+  const isCreatedBy = user?._id === createdBy;
+
   return (
     <Box
       style={{
         width: "100%",
         position: "relative",
         display: "flex",
-        justifyContent: user ? "end" : "start",
+        justifyContent: isCreatedBy ? "end" : "start",
       }}
     >
       <Paper
@@ -22,7 +27,7 @@ function Message({ message, user }: Props) {
           p: 2,
           maxWidth: 1 / 3,
           width: "auto",
-          bgcolor: user ? blue[50] : "",
+          bgcolor: isCreatedBy ? blue[50] : "",
         }}
       >
         {message}
@@ -31,4 +36,4 @@ function Message({ message, user }: Props) {
   );
 }
 
-export default Message;
+export default MessageCard;

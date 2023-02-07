@@ -1,6 +1,8 @@
 import { api, socket } from "./api";
+import { Message } from "./messageServices";
 
 export interface Room {
+  messages: Message[];
   name: string;
   _id: string;
 }
@@ -34,6 +36,25 @@ export const roomApi = api.injectEndpoints({
     }),
     getRoom: build.query<Room, string>({
       query: (roomId) => `/room/${roomId}`,
+      async onCacheEntryAdded(
+        arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
+      ) {
+        try {
+          await cacheDataLoaded;
+
+          socket.on("newMessage", (message) => {
+            console.log(message);
+            updateCachedData((draft) => {
+              draft.messages.push(message);
+            });
+          });
+        } catch (error) {}
+
+        await cacheEntryRemoved;
+
+        socket.close();
+      },
     }),
     createRoom: build.mutation<Room, CreateRoom>({
       query: (body) => ({

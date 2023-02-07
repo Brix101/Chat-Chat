@@ -26,7 +26,7 @@ const createMessageHandler = async (
     const newMessage = await createMessage({ message, createdBy: userId });
 
     await updateRoom(
-      { id: roomId },
+      { _id: roomId },
       {
         $addToSet: { messages: newMessage },
       },
