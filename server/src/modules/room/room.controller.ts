@@ -16,8 +16,10 @@ const createRoomHandler = async (
   try {
     const { name } = req.body;
     const userId = res.locals.user._id;
+    const socket = req.app.get("socket");
     const newRoom = await createRoom({ name, createdBy: userId });
 
+    socket.emit("createdRoom", newRoom);
     return res.status(StatusCodes.CREATED).send(newRoom);
   } catch (error: any) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error });

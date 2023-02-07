@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Outlet, useRoutes } from "react-router-dom";
 import { useTypedSelector } from "./app/store";
 import { authState } from "./features/auth/authSlice";
 import Dashboard from "./pages/Dashboard";
+import Room from "./pages/Room";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 
@@ -12,8 +13,8 @@ function Routes() {
     {
       // public routes
       path: "/",
-      element: isAuthenticated ? <Outlet /> : <Navigate to={"/sign-in"} />,
-      children: [{ path: "/", element: <Dashboard /> }],
+      element: isAuthenticated ? <Dashboard /> : <Navigate to={"/sign-in"} />,
+      children: [{ path: "/:roomId", element: <Room /> }],
     },
     {
       path: "/",

@@ -9,7 +9,6 @@ export async function registerUserHandler(
   res: Response
 ) {
   const { name, email, password } = req.body;
-  const socket = req.app.get("socket");
   try {
     await createUser({ name, email, password });
 
