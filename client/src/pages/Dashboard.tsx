@@ -1,126 +1,256 @@
-import StarIcon from "@mui/icons-material/StarBorder";
+import SendIcon from "@mui/icons-material/Send";
 import { LoadingButton } from "@mui/lab";
+import {
+  Button,
+  CircularProgress,
+  FormControl,
+  InputAdornment,
+  OutlinedInput,
+} from "@mui/material";
 import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
-import GlobalStyles from "@mui/material/GlobalStyles";
-import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
+import { Box } from "@mui/system";
+import { useEffect, useRef } from "react";
 import { socket } from "../app/services/api";
 import { useLogoutMutation } from "../app/services/authServices";
 import { useGetUserQuery } from "../app/services/userServices";
+import Message from "../components/Message";
+import CreateRoomButton from "../features/room/CreateRoomButton";
 
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
+interface Message {
+  message: string;
+  user: boolean;
 }
 
-const tiers = [
+const messages: Message[] = [
   {
-    title: "Free",
-    price: "0",
-    description: [
-      "10 users included",
-      "2 GB of storage",
-      "Help center access",
-      "Email support",
-    ],
-    buttonText: "Sign up for free",
-    buttonVariant: "outlined",
+    message: "hi",
+    user: true,
   },
   {
-    title: "Pro",
-    subheader: "Most popular",
-    price: "15",
-    description: [
-      "20 users included",
-      "10 GB of storage",
-      "Help center access",
-      "Priority email support",
-    ],
-    buttonText: "Get started",
-    buttonVariant: "contained",
+    message: "hello",
+    user: false,
   },
   {
-    title: "Enterprise",
-    price: "30",
-    description: [
-      "50 users included",
-      "30 GB of storage",
-      "Help center access",
-      "Phone & email support",
-    ],
-    buttonText: "Contact us",
-    buttonVariant: "outlined",
-  },
-];
-const footers = [
-  {
-    title: "Company",
-    description: ["Team", "History", "Contact us", "Locations"],
+    message: "hi",
+    user: true,
   },
   {
-    title: "Features",
-    description: [
-      "Cool stuff",
-      "Random feature",
-      "Team feature",
-      "Developer stuff",
-      "Another one",
-    ],
+    message: "hello",
+    user: false,
   },
   {
-    title: "Resources",
-    description: [
-      "Resource",
-      "Resource name",
-      "Another resource",
-      "Final resource",
-    ],
+    message: "hi",
+    user: true,
   },
   {
-    title: "Legal",
-    description: ["Privacy policy", "Terms of use"],
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
+  },
+  {
+    message: "hi",
+    user: true,
+  },
+  {
+    message: "hello",
+    user: false,
   },
 ];
 
 export default function Dashboard() {
-  const [logoutMutation, { isLoading }] = useLogoutMutation();
-  const { data } = useGetUserQuery("");
+  const [logoutMutation, { isLoading: isLogoutLoading }] = useLogoutMutation();
+  const { data, isLoading: isUserLoading } = useGetUserQuery("");
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // receive a message from the server
   socket.on("ping", (data) => {
-    console.log({data})
+    console.log({ data });
     socket.emit(data, "ping");
   });
-  
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
-    <React.Fragment>
-      <GlobalStyles
-        styles={{ ul: { margin: 0, padding: 0, listStyle: "none" } }}
-      />
+    <Box sx={{ display: "flex", height: "100vh", flexDirection: "column" }}>
       <CssBaseline />
       <AppBar
         position="static"
@@ -128,162 +258,150 @@ export default function Dashboard() {
         elevation={0}
         sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
       >
-        <Toolbar sx={{ flexWrap: "wrap" }}>
-          <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-            Chat Chat
-          </Typography>
-          <nav>
-            <Link
-              component={"button"}
-              variant="button"
-              color="text.primary"
-              sx={{ my: 1, mx: 1.5 }}
+        <Container maxWidth={"xl"} component="main" sx={{ flexWrap: "wrap" }}>
+          <Toolbar>
+            <Typography
+              variant="h6"
+              color="inherit"
+              noWrap
+              sx={{ flexGrow: 1 }}
             >
-              {data?.email}
-            </Link>
-          </nav>
-          <LoadingButton
-            loading={isLoading}
-            variant="outlined"
-            sx={{ my: 1, mx: 1.5 }}
-            onClick={() => logoutMutation("")}
-          >
-            Logout
-          </LoadingButton>
-        </Toolbar>
+              Chat Chat
+            </Typography>
+            {isUserLoading ? (
+              <CircularProgress size={25} />
+            ) : (
+              <>
+                <Link
+                  component={"div"}
+                  color="text.primary"
+                  sx={{ my: 1, mx: 1.5 }}
+                >
+                  {data?.email}
+                </Link>
+                <LoadingButton
+                  loading={isLogoutLoading}
+                  variant="outlined"
+                  sx={{ my: 1, mx: 1.5 }}
+                  onClick={() =>
+                    logoutMutation("").then((res) => {
+                      if (res) {
+                        socket.disconnect();
+                      }
+                    })
+                  }
+                >
+                  Logout
+                </LoadingButton>
+              </>
+            )}
+          </Toolbar>
+        </Container>
       </AppBar>
-      {/* Hero unit */}
       <Container
-        disableGutters
-        maxWidth="sm"
+        maxWidth={"xl"}
         component="main"
-        sx={{ pt: 8, pb: 6 }}
+        sx={{ display: "flex", flex: 1 }}
       >
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          color="text.primary"
-          gutterBottom
+        <Box
+          sx={{
+            height: "100%",
+            width: 240,
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+            borderRight: (theme) => `1px solid ${theme.palette.divider}`,
+            p: 0.5,
+          }}
         >
-          Dashboard
-        </Typography>
-        <Typography
-          variant="h5"
-          align="center"
-          color="text.secondary"
-          component="p"
+          <CreateRoomButton />
+          <Button variant="outlined" size="large">
+            Outlined 1
+          </Button>
+          <Button variant="outlined" size="large">
+            Outlined 2
+          </Button>
+          <Button variant="outlined" size="large">
+            Outlined 3
+          </Button>
+          <Button variant="outlined" size="large">
+            Outlined 4
+          </Button>
+          <Button variant="outlined" size="large">
+            Outlined 5
+          </Button>
+          <Button variant="outlined" size="large">
+            Outlined 6
+          </Button>
+        </Box>
+        <Box
+          sx={{
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+          }}
         >
-          Quickly build an effective dasDashboard table for your potential
-          customers with this layout. It&apos;s built with default MUI
-          components with little customization.
-        </Typography>
-      </Container>
-      {/* End hero unit */}
-      <Container maxWidth="md" component="main">
-        <Grid container spacing={5} alignItems="flex-end">
-          {tiers.map((tier) => (
-            // Enterprise card is full width at sm breakpoint
-            <Grid
-              item
-              key={tier.title}
-              xs={12}
-              sm={tier.title === "Enterprise" ? 12 : 6}
-              md={4}
+          <Box
+            sx={{
+              height: "75vh",
+              width: "100%",
+              gap: 1,
+              p: 2,
+              overflowY: "auto",
+            }}
+          >
+            <Box
+              sx={{
+                height: "auto",
+                minHeight: "75vh",
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                gap: 1,
+                p: 2,
+                overflowY: "auto",
+              }}
             >
-              <Card>
-                <CardHeader
-                  title={tier.title}
-                  subheader={tier.subheader}
-                  titleTypographyProps={{ align: "center" }}
-                  action={tier.title === "Pro" ? <StarIcon /> : null}
-                  subheaderTypographyProps={{
-                    align: "center",
-                  }}
-                  sx={{
-                    backgroundColor: (theme) =>
-                      theme.palette.mode === "light"
-                        ? theme.palette.grey[200]
-                        : theme.palette.grey[700],
-                  }}
+              {messages.map(({ message, user }, index) => (
+                <Message
+                  key={index}
+                  message={message + " " + index}
+                  user={user}
                 />
-                <CardContent>
-                  <Box
+              ))}
+              <div ref={messagesEndRef} />
+            </Box>
+          </Box>
+          <FormControl sx={{ m: 2, width: "100%" }} variant="outlined">
+            <OutlinedInput
+              type="text"
+              multiline
+              rows={3}
+              placeholder="Message..."
+              sx={{ pr: 8 }}
+              endAdornment={
+                <InputAdornment position="end">
+                  <LoadingButton
+                    color="primary"
+                    variant="contained"
                     sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "baseline",
-                      mb: 2,
+                      position: "absolute",
+                      right: 5,
+                      bottom: 5,
+                      width: 35,
                     }}
+                    size="large"
                   >
-                    <Typography
-                      component="h2"
-                      variant="h3"
-                      color="text.primary"
-                    >
-                      ${tier.price}
-                    </Typography>
-                    <Typography variant="h6" color="text.secondary">
-                      /mo
-                    </Typography>
-                  </Box>
-                  <ul>
-                    {tier.description.map((line) => (
-                      <Typography
-                        component="li"
-                        variant="subtitle1"
-                        align="center"
-                        key={line}
-                      >
-                        {line}
-                      </Typography>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    fullWidth
-                    variant={tier.buttonVariant as "outlined" | "contained"}
-                  >
-                    {tier.buttonText}
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+                    <SendIcon />
+                  </LoadingButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+        </Box>
       </Container>
-      {/* Footer */}
-      <Container
-        maxWidth="md"
-        component="footer"
-        sx={{
-          borderTop: (theme) => `1px solid ${theme.palette.divider}`,
-          mt: 8,
-          py: [3, 6],
-        }}
-      >
-        <Grid container spacing={4} justifyContent="space-evenly">
-          {footers.map((footer) => (
-            <Grid item xs={6} sm={3} key={footer.title}>
-              <Typography variant="h6" color="text.primary" gutterBottom>
-                {footer.title}
-              </Typography>
-              <ul>
-                {footer.description.map((item) => (
-                  <li key={item}>
-                    <Link href="#" variant="subtitle1" color="text.secondary">
-                      {item}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </Grid>
-          ))}
-        </Grid>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
-      {/* End footer */}
-    </React.Fragment>
+    </Box>
   );
 }

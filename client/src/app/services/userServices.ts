@@ -1,5 +1,4 @@
-import io from "socket.io-client";
-import { api, server } from "./api";
+import { api } from "./api";
 
 export interface User {
   email: string;
@@ -37,13 +36,12 @@ export const userApi = api.injectEndpoints({
           getCacheEntry,
         }
       ) {
-        const socket = io(server);
         try {
           await cacheDataLoaded;
 
-          socket.on("connect", () => {
-            console.log("connected");
-          });
+          // socket.on("connect", () => {
+          //   console.log("connected");
+          // });
           //socket.on("allSpots", (spots) => {
           //updateCachedData((draft) => {
           // draft.splice(0, draft.length);
@@ -53,8 +51,6 @@ export const userApi = api.injectEndpoints({
         } catch (error) {}
 
         await cacheEntryRemoved;
-
-        socket.close();
       },
     }),
   }),
