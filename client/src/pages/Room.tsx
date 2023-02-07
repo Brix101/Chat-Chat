@@ -2,6 +2,8 @@ import SendIcon from "@mui/icons-material/Send";
 import { LoadingButton } from "@mui/lab";
 import { Box, FormControl, InputAdornment, OutlinedInput } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import { socket } from "../app/services/api";
 import Message from "../components/Message";
 
 interface IMessage {
@@ -9,6 +11,7 @@ interface IMessage {
   user: boolean;
 }
 function Room() {
+  const { roomId } = useParams();
   const [messages, setMessages] = useState<IMessage[]>([
     {
       message: "hi",
@@ -226,6 +229,16 @@ function Room() {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  useEffect(() => {
+    if (roomId) {
+      socket.connect();
+      socket.emit("join", roomId);
+    }
+    return function () {
+      socket.close();
+    };
+  }, [roomId]);
 
   useEffect(() => {
     scrollToBottom();

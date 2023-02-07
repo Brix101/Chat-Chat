@@ -33,6 +33,7 @@ const createMessageHandler = async (
       {}
     );
 
+    socket.to(roomId).emit("newMessage", newMessage);
     return res.status(StatusCodes.CREATED).send(newMessage);
   } catch (error: any) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error });
