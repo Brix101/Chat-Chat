@@ -1,7 +1,7 @@
 import SendIcon from "@mui/icons-material/Send";
 import { LoadingButton } from "@mui/lab";
 import { Box, FormControl, InputAdornment, OutlinedInput } from "@mui/material";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { socket } from "../app/services/api";
 import { useCreateMessageMutation } from "../app/services/messageServices";
@@ -16,6 +16,8 @@ function Room() {
     refetchOnMountOrArgChange: true,
     refetchOnReconnect: true,
   });
+
+  const [message, setMessage] = useState<string>();
 
   const [createMessage, { isLoading }] = useCreateMessageMutation();
 
@@ -41,12 +43,12 @@ function Room() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
     createMessage({
-      message: data.get("message") as string,
+      message: message as string,
       roomId: roomId as string,
+    }).then((res) => {
+      setMessage("");
     });
-    event.currentTarget.reset();
   };
 
   return (
@@ -100,6 +102,8 @@ function Room() {
             multiline
             minRows={3}
             placeholder="Message..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
             sx={{ pr: 8 }}
             endAdornment={
               <InputAdornment position="end">

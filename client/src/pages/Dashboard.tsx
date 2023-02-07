@@ -7,7 +7,7 @@ import Link from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { socket } from "../app/services/api";
 import { useLogoutMutation } from "../app/services/authServices";
 import { useGetAllRoomQuery } from "../app/services/roomServices";
@@ -16,6 +16,7 @@ import CreateRoomButton from "../features/room/CreateRoomButton";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { roomId } = useParams();
   const [logoutMutation, { isLoading: isLogoutLoading }] = useLogoutMutation();
   const { data, isLoading: isUserLoading } = useGetUserQuery("");
   const { data: roomData, isLoading: isRoomLoading } = useGetAllRoomQuery("");
@@ -95,7 +96,8 @@ export default function Dashboard() {
               {roomData?.map(({ _id, name }) => (
                 <Button
                   key={_id}
-                  variant="outlined"
+                  color={roomId === _id ? "secondary" : "primary"}
+                  variant={roomId === _id ? "contained" : "outlined"}
                   size="large"
                   onClick={() => navigate(`/${_id}`)}
                   fullWidth

@@ -24,34 +24,6 @@ export const userApi = api.injectEndpoints({
         method: "POST",
         body,
       }),
-      async onCacheEntryAdded(
-        arg,
-        {
-          dispatch,
-          getState,
-          extra,
-          requestId,
-          cacheEntryRemoved,
-          cacheDataLoaded,
-          getCacheEntry,
-        }
-      ) {
-        try {
-          await cacheDataLoaded;
-
-          // socket.on("connect", () => {
-          //   console.log("connected");
-          // });
-          //socket.on("allSpots", (spots) => {
-          //updateCachedData((draft) => {
-          // draft.splice(0, draft.length);
-          // draft.push(...spots);
-          // });
-          // });
-        } catch (error) {}
-
-        await cacheEntryRemoved;
-      },
     }),
   }),
 });
