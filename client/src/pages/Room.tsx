@@ -28,6 +28,7 @@ function Room() {
   };
 
   useEffect(() => {
+    socket.close();
     if (roomId) {
       socket.connect();
       socket.emit("join", roomId);

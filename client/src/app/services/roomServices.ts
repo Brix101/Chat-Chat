@@ -42,7 +42,6 @@ export const roomApi = api.injectEndpoints({
       ) {
         try {
           await cacheDataLoaded;
-
           socket.on("newMessage", (message) => {
             updateCachedData((draft) => {
               draft.messages.push(message);
