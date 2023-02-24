@@ -11,8 +11,8 @@ import {
 const router = express.Router();
 
 router.post("/", [requireUser], createRoomHandler);
-router.get("/:roomId", [requireUser], getRoomHandler);
 router.get("/", [requireUser], getAllRoomHandler);
+router.get("/:roomId", [requireUser], getRoomHandler);
 router.put("/", [requireUser], updateRoomHandler);
 router.delete("/:roomId", [requireUser], deleteRoomHandler);
 

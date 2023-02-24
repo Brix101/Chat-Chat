@@ -22,10 +22,10 @@ export default function (app: Express) {
         const router = moduleRouters.default as Router;
         if (Object.keys(router).length) {
           console.log({
-            rootPath: `/api/${cleanName}`,
-            subPath: router.stack.map((layer) => ({
+            module: cleanName,
+            paths: router.stack.map((layer) => ({
+              path: `/api/${cleanName + layer.route.path}`,
               method: Object.keys(layer.route.methods)[0],
-              path: layer.route.path,
             })),
           });
           app.use(`/api/${cleanName}`, router);
